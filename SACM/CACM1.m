@@ -9,7 +9,7 @@ I = double(Img(:,:,1));
 
 ic=nrow/2;
 jc=ncol/2;
-r=20;
+r=35;
 [X,Y] = meshgrid(1:ncol, 1:nrow);
 phi_0 = sqrt((X-jc).^2+(Y-ic).^2)-r;  %³õÊ¼»¯phiÎªSDF
 
