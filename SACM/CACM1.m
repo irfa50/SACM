@@ -1,6 +1,6 @@
 clear all;
-%Img = imread('my.bmp');
-Img = imread('sample.bmp');
+Img = imread('my.bmp');
+%Img = imread('sample.bmp');
 %Img=imread('2.bmp');
 %Img=imread('3.bmp');
 % Img=imread('5.bmp');
