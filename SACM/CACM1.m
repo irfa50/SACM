@@ -40,8 +40,8 @@ pause();
 phi=phi_0;
 numIter = 1;
 for k=1:1000
-    phi=Bhattacharyya_basic(I,phi,lambda,delta_t,epsilon,bandwidth,numIter);
-    %phi=AMP(I,phi,lambda,delta_t,epsilon,bandwidth,numIter);
+    %phi=Bhattacharyya_basic(I,phi,lambda,delta_t,epsilon,bandwidth,numIter);
+    phi=AMP(I,phi,lambda,delta_t,epsilon,bandwidth,numIter);
     %phi1=EVOLUTION_CV(I, phi1, mu, nu, lambda_1, lambda_2, delta_t, epsilon, numIter); 
     if mod(k,1)==0
         pause(0.01);

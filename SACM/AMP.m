@@ -11,17 +11,17 @@ for k=1:numIter
     p_minus = ksdensity(I(phi<0),0:255,'width',bandwidth);
     R_plus=sum(sum(phi>0));
     R_minus=sum(sum(phi<0));
-    figure(2);plot(0:255,p_plus,'r');
-    hold on;
-    plot(0:255,p_minus,'g')
-    hold off;
+    subplot(122);
+    plot(0:255,p_plus,'r',0:255,p_minus,'g');
+    legend('out','int');
+    
     V=0;
     for z=0:255
         s1=p_minus(z+1)*p_plus(z+1)*(p_minus(z+1)/R_minus-p_plus(z+1)/R_plus)/(p_minus(z+1)+p_plus(z+1)+1e-10)^2;
         s2=Gaussian_kernel((z-I),bandwidth)*(p_minus(z+1)^2/R_plus-p_plus(z+1)^2/R_minus)/(p_minus(z+1)+p_plus(z+1)+1e-10)^2;
         V=V+0.5*(s1+s2);
     end 
-    phi=phi+delta_t*delta_h.*(lambda*Curv-V);
+    phi=phi+delta_t*delta_h.*(lambda*Curv-3000*V);
 end
 
 function g = NeumannBoundCond(f)
