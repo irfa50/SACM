@@ -1,5 +1,6 @@
 clear all;
-Img = imread('my.bmp');
+%Img = imread('my.bmp');
+Img = imread('sample.bmp');
 %Img=imread('2.bmp');
 %Img=imread('3.bmp');
 % Img=imread('5.bmp');
@@ -8,7 +9,7 @@ I = double(Img(:,:,1));
 %%初始水平集
 ic=nrow/2;
 jc=ncol/2;
-r=25;
+r=35;
 [X,Y] = meshgrid(1:ncol, 1:nrow);
 phi_0 = sqrt((X-jc).^2+(Y-ic).^2)-r;  %初始化phi为SDF
 %%SACM参数
@@ -41,7 +42,8 @@ phi=phi_0;
 numIter = 1;
 for k=1:1000
     %phi=Bhattacharyya_basic(I,phi,lambda,delta_t,epsilon,bandwidth,numIter);
-    phi=AMP(I,phi,lambda,delta_t,epsilon,bandwidth,numIter);
+    %phi=AMP(I,phi,lambda,delta_t,epsilon,bandwidth,numIter);
+    phi=MI(I,phi,lambda,delta_t,epsilon,bandwidth,numIter);
     %phi1=EVOLUTION_CV(I, phi1, mu, nu, lambda_1, lambda_2, delta_t, epsilon, numIter); 
     if mod(k,1)==0
         pause(0.01);
