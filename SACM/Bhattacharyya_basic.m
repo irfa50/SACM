@@ -6,17 +6,25 @@ for k=1:numIter
     %delta_h=ones(size(phi));
     %delta_h(abs(delta_h)<=epsilon)=1./(2*epsilon).*(1+cos(pi.*phi/epsilon));
     Curv = curvature(phi); %¼ÆËãphiµÄÇúÂÊ Curv
- 
+%%
+%     if k==1
+%         p_plus = ksdensity(I(phi>0),0:255,'width',bandwidth);
+%         p_minus = ksdensity(I(phi<0),0:255,'width',bandwidth);
+%     else
+%         p_plus = (p_plus*R_plus+sum(sum(xor(phi>0,phi_old>0))).*ksdensity(I(xor(phi>0,phi_old>0)),0:255,'width',bandwidth))./sum(sum(phi>0));
+%         p_minus = (p_minus*R_minus-sum(sum(xor(phi<0,phi_old<0)))*ksdensity(Img(xor(phi<0,phi_old<0)),0:255,'width',bandwidth))/sum(sum(phi<0));
+%     end
+%%
     p_plus = ksdensity(I(phi>0),0:255,'width',bandwidth);
     p_minus = ksdensity(I(phi<0),0:255,'width',bandwidth);
+    
     R_plus=sum(sum(phi>0));
     R_minus=sum(sum(phi<0));
 %     figure(2);
-    subplot(122)
-    plot(0:255,p_plus,'r');
-    hold on;
-    plot(0:255,p_minus,'g')
-    hold off;
+    subplot(122);
+    plot(0:255,p_plus,'r',0:255,p_minus,'g');
+    legend('out','int')
+
     V=0;
     for z=0:255
         s1=sqrt(p_minus(z+1)*p_plus(z+1))*(1/R_minus-1/R_plus);
@@ -24,6 +32,7 @@ for k=1:numIter
         V=V+0.5*(s1+s2);
     end 
     phi=phi+delta_t*delta_h.*(lambda*Curv-3000*V);
+%     phi_old=phi;
 end
 
 function g = NeumannBoundCond(f)
