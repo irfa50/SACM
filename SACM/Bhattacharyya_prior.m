@@ -1,4 +1,4 @@
-function phi = Bhattacharyya_prior(I,phi_0,lambda,delta_t,epsilon,bandwidth,numIter)
+function phi = Bhattacharyya_prior(I,phi_0,lambda,delta_t,epsilon,p_plus_prior,p_minus_prior,lambda1,lambda2,bandwidth,numIter)
 phi=phi_0;
 for k=1:numIter
     phi=NeumannBoundCond(phi);
@@ -20,15 +20,18 @@ for k=1:numIter
     
     R_plus=sum(sum(phi>0));
     R_minus=sum(sum(phi<0));
-%     figure(2);
+    figure(1);
     subplot(122);
     plot(0:255,p_plus,'r',0:255,p_minus,'g');
     legend('out','int')
 
     V=0;
     for z=0:255
-        s1=sqrt(p_minus(z+1)*p_plus(z+1))*(1/R_minus-1/R_plus);
-        s2=Gaussian_kernel((z-I),bandwidth)*(sqrt(p_minus(z+1)/(p_plus(z+1)+1e-10))*(1/R_plus)-sqrt(p_plus(z+1)/(p_minus(z+1)+1e-10))*(1/R_minus));
+        s1_base=sqrt(p_minus(z+1)*p_plus(z+1))*(1/R_minus-1/R_plus);
+        s1_p1=sqrt(p_minus_prior(z+1)*p_minus(z+1))*(1/R_minus);
+        s1_p2=sqrt(p_plus_prior(z+1)*p_plus(z+1))*(1/R_plus);
+        s1=s1_base-s1_p1+s1_p2;
+        s2=Gaussian_kernel((z-I),bandwidth)*((sqrt(p_minus(z+1)/(p_plus(z+1)+1e-10))-sqrt(p_plus_prior(z+1)/(p_plus(z+1)+1e-10)))*(1/R_plus)+(sqrt(p_minus_prior(z+1)/(p_minus(z+1)+1e-10))-sqrt(p_plus(z+1)/(p_minus(z+1)+1e-10)))*(1/R_minus));
         V=V+0.5*(s1+s2);
     end 
     phi=phi+delta_t*delta_h.*(lambda*Curv-3000*V);
