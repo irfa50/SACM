@@ -5,7 +5,7 @@ Img = double(Img(:,:,1));
 initialLSF = ones(size(Img(:,:,1))).*c0;
 initialLSF(20:80,20:80) = -c0;
 LSF_1 = ones(size(Img(:,:,1))).*c0;
-LSF_1(30:70,30:70) = -c0;
+LSF_1(30:90,30:90) = -c0;
 u = initialLSF;
 u1 = LSF_1;
 
